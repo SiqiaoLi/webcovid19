@@ -1,0 +1,62 @@
+runtime: php55
+api_version: 1
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /
+  script: login.php
+
+- url: /main
+  script: main.php
+
+- url: /login
+  script: login.php
+
+- url: /register
+  script: register.php
+
+- url: /name
+  script: name.php
+
+- url: /password
+  script: password.php
+
+- url: /uploadVideo
+  script: uploadVideo.php
+
+- url: /uploadVideo1
+  script: uploadVideo1.php
+
+- url: /watch
+  script: watch.php
+
+- url: /covid19
+  script: covid19.php
+
+- url: /selectCountry
+  script: selectCountry.php
+
+
+
+skip_files:
+- ^(.*/)?.*/assets/.*$
+- ^(.*/)?.*/build/.*$
+- ^(.*/)?.*/test/.*$
+- ^(.*/)?.*/templates/.*$
+- ^(.*/)?.*/node_modules/.*$
+
+- ^(assets/.*)
+- ^(build/.*)
+- ^(test/.*)
+- ^(templates/.*)
+- ^(node_modules/.*)
+
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.DS_Store$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+
