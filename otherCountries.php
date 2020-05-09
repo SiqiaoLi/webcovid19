@@ -5,7 +5,6 @@ require_once 'php/google-api-php-client/vendor/autoload.php';
 session_start();
 
 $name = $_SESSION['username'];
-$email = $_SESSION['login_email'];
 
 echo $name."   ";
 
@@ -20,7 +19,7 @@ echo $name."   ";
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.6">
-    <title>Prayer</title>
+    <title>Information of other countries</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/dashboard/">
    
@@ -146,7 +145,7 @@ echo $name."   ";
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">COVID-19 in Australia</h1>
+        <h1 class="h2">COVID-19 in other countries</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -160,10 +159,136 @@ echo $name."   ";
       </div>
 
       <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-      <iframe class="noScrolling" width="1150" height="600" src="https://datastudio.google.com/embed/reporting/c5cdcc11-8ae4-4e20-b647-1b28369206e0/page/2lKPB" frameborder="0"  allowfullscreen></iframe>
-      <h2>Daily Number of Reported Cases</h2>
+
+      <form action="/otherCountries" method="post" class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+             <label for="inputPassword2" class="sr-only">Country</label>
+             <input type="text" class="form-control" id="inputPassword2" name="country" placeholder="Enter a country">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+      </form>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>Date</th>
+              <th>Daily Confirmed Cases</th>
+              <th>Confirmed Cases</th>
+              <th>Deaths</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+                
+                $client = new Google_Client();
+                $client->useApplicationDefaultCredentials();
+                $client->addScope(Google_Service_Bigquery::BIGQUERY);
+                $bigquery = new Google_Service_Bigquery($client);
+                // $projectId = 'task2-272810';
+                $projectId = 's3774940-cc2018';
+                session_start();
+                if(trim($_POST['country']) == "" || !isset($_POST['country'])){
+                  $country = $_SESSION['country'];
+                } else {
+                  $country = $_POST["country"];
+                  $_SESSION['country'] =$_POST["country"];
+                }
+                
+                $request = new Google_Service_Bigquery_QueryRequest();
+                $str = '';
+
+                $request->setQuery("SELECT countries_and_territories,date,daily_confirmed_cases,confirmed_cases,deaths FROM [bigquery-public-data.covid19_ecdc.covid_19_geographic_distribution_worldwide] where upper(countries_and_territories) like upper('%$country%') order by date DESC LIMIT 10");
+
+                $response = $bigquery->jobs->query($projectId, $request);
+                $rows = $response->getRows();
+
+                foreach ($rows as $row)
+                {
+                    $str .= "<tr>";
+
+                    foreach ($row['f'] as $field)
+                    {
+                        $str .= "<td>" . $field['v'] . "</td>";
+                    }
+                    $str .= "</tr>";
+                }
+                echo $str;
+            ?>
+
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">        
+            <h1 class="h2">Advanced Search</h1>
+        </div>
+         <form action="/otherCountries" method="post" class="form-inline">
+            <div class="form-group mb-2">
+            
+              <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Day</label>
+              <select class="custom-select my-1 mr-sm-2" name="day" id="inlineFormCustomSelectPref">
+                  <option selected>Choose...</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                  <option>13</option>
+                  <option>14</option>
+                  <option>15</option>
+                  <option>16</option>
+                  <option>17</option>
+                  <option>18</option>
+                  <option>19</option>
+                  <option>20</option>
+                  <option>21</option>
+                  <option>22</option>
+                  <option>23</option>
+                  <option>24</option>
+                  <option>25</option>
+                  <option>26</option>
+                  <option>27</option>
+                  <option>28</option>
+                  <option>29</option>
+                  <option>30</option>
+                  <option>31</option>
+              </select>
+              <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Month</label>
+              <select class="custom-select my-1 mr-sm-2" name="month" id="inlineFormCustomSelectPref">
+                  <option selected>Choose...</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+              </select>
+              <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Year</label>
+              <select class="custom-select my-1 mr-sm-2" name="year" id="inlineFormCustomSelectPref">
+                  <option selected>Choose...</option>
+                  <option>2020</option>
+                  <option>2019</option>
+              </select>
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+             <label for="inputPassword2" class="sr-only">Country</label>
+             <input type="text" class="form-control" id="inputPassword2" name="country2" placeholder="Enter a country">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+         </form>
+         <table class="table table-striped table-sm">
           <thead>
             <tr>
               <th>Country</th>
@@ -182,10 +307,27 @@ echo $name."   ";
                 // $projectId = 'task2-272810';
                 $projectId = 's3774940-cc2018';
 
+                session_start();
+                if(trim($_POST['country2']) == "" || !isset($_POST['country2'])){
+                  $country2 = $_SESSION['country2'];
+                  $date = $_SESSION["day"];
+                  $month = $_SESSION["month"];
+                  $year = $_SESSION["year"];
+                } else {
+                  $country2 = $_POST["country2"];
+                  $date = $_POST["day"];
+                  $month = $_POST["month"];
+                  $year = $_POST["year"];
+                  $_SESSION['country2'] =$_POST["country2"];
+                  $_SESSION['day'] = $_POST["day"];
+                  $_SESSION['month'] = $_POST["month"];
+                  $_SESSION['year'] = $_POST["year"];
+                }
+
                 $request = new Google_Service_Bigquery_QueryRequest();
                 $str = '';
 
-                $request->setQuery("SELECT countries_and_territories,date,daily_confirmed_cases,confirmed_cases,deaths FROM [bigquery-public-data.covid19_ecdc.covid_19_geographic_distribution_worldwide] where countries_and_territories = 'Australia' order by date DESC LIMIT 7");
+                $request->setQuery("SELECT countries_and_territories,date,daily_confirmed_cases,confirmed_cases,deaths FROM [bigquery-public-data.covid19_ecdc.covid_19_geographic_distribution_worldwide] where upper(countries_and_territories) like upper('%$country2%') and year=$year and day=$date and month=$month order by date DESC LIMIT 10");
 
                 $response = $bigquery->jobs->query($projectId, $request);
                 $rows = $response->getRows();
@@ -202,6 +344,7 @@ echo $name."   ";
                 }
                 echo $str;
             ?>
+
           </tbody>
         </table>
       </div>
@@ -212,7 +355,9 @@ echo $name."   ";
         <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-        <script src="dashboard.js"></script></body>
+        <script src="dashboard.js"></script>
+    
+</body>
 </html>
 
 

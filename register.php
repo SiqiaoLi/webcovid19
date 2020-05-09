@@ -1,5 +1,4 @@
 <?php
-      
 
 include("connectMysql.php");
 session_start();
@@ -29,111 +28,72 @@ session_start();
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      
-      <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+      <title>register</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+      <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/floating-labels/">
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    
-<title>regester</title>
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="/css/floating-labels.css" rel="stylesheet">
 
 </head>
 <body>
 
 <div class="container container-register">
-    <h3>Register</h3>
-    <form action="/register" method="post" onsubmit="return check()">
+
+    <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+    </div>
+    
+    <form class="form-signin" action="/register" method="post">
         
-        <div class="form-group">
-            <label for="exampleInputUsername">Username:</label>
-            <input type="text" class="form-control" id="username" name="username"  placeholder="username">
+        <div class="form-label-group">
+            <input type="text" class="form-control" id="inputUsername" name="username"  placeholder="Username" required autofocus>
+            <label for="inputUsername">Username</label>
         </div>
-        <span id="username_tx" class="stuinfo" style="float: left;"></span>
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email:</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="email">
+        
+        <div class="form-label-group">
+            <input type="email" class="form-control" id="inputEmail1" name="email" placeholder="Email address" required autofocus>
+            <label for="inputEmail1">Email</label>
         </div>
-        <span id="nicheng_tx" class="stuinfo" style="float: left;" id="uu"></span>
-        <div class="form-group">
-            <label for="exampleInputPassword">Password:</label>
-            <input type="password" class="form-control" id="password1" name="password" placeholder="password">
+        
+        <div class="form-label-group">
+            <input type="password" class="form-control" id="password1" name="password" placeholder="Password" required autofocus>
+            <label for="password1">Password</label>
         </div>
-        <span id="password1_tx" class="stuinfo" style="float: left;"></span>
-        <div class="form-group">
-            <label for="Password4">Confirm Password:</label>
-            <input type="password" class="form-control" id="password2" name="confpassword" placeholder="confirm password">
+        
+        <div class="form-label-group">
+            <input type="password" class="form-control" id="password2" name="confpassword" placeholder="Confirm Password">
+            <label for="password2">Confirm Password</label>
         </div>
-        <span id="password2_tx" class="stuinfo" style="float: left;"></span>
+        
         <br>
-        <div style="clear: both;"></div>
-        <button type="reset" class="btn btn-primary reset">Reset</button>
-        <button type="submit" class="btn btn-primary login" >Sign up</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
     </form>
 </div>
-
-<script>
-        function check(){
-            if($("#uu").html()=="1"){
-                return false;
-            }else{
-                return true;
-            }
-        }
-        $(function(){
-            
-            var username = $("#username").val();
-            var nicheng = $("#email").val();
-            var password1 = $("#password1").val();
-            var password2 = $("#password2").val();
-            
-            //username
-            $("#username").blur(function () {
-                username = $("#username").val();
-                if(username == ""){
-                    $("#username_tx").html("Please enter username");
-                
-                }else{
-                    $("#username_tx").html("");
-                }
-            });
-            //email
-            $("#email").blur(function () {
-                nicheng = $("#email").val();
-                if(nicheng == ""){
-                    $("#email_tx").html("Please enter email");
-                }else{
-                    $("#email_tx").html("");
-                }
-            });
-            //password
-            $("#password1").blur(function () {
-                password1 = $("#password1").val();
-                if(password1 == ""){
-                    $("#password1_tx").html("Please enter password");
-                }else{
-                    $("#password1_tx").html("");
-                }
-            });
-            //password1 ?= password2
-            $("#password2").blur(function () {
-                password2 = $("#password2").val();
-                password1 = $("#password1").val();
-                if(password1 != password2){
-                    $("#password2_tx").html("Passwords do not match");
-                    $("#password1").html("");
-                    $("#password2").html("");
-                    $("#uu").html("1");
-                }else{
-                    $("#password2_tx").html("");
-                }
-            });
-        })
-    </script>
     
       
 </body>

@@ -5,6 +5,9 @@ handlers:
 - url: /css
   static_dir: css
 
+- url: /otherCountries
+  script: otherCountries.php
+
 - url: /
   script: login.php
 
