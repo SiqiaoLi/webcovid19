@@ -179,8 +179,8 @@ echo $name."   ";
                 $client->useApplicationDefaultCredentials();
                 $client->addScope(Google_Service_Bigquery::BIGQUERY);
                 $bigquery = new Google_Service_Bigquery($client);
-                // $projectId = 'task2-272810';
-                $projectId = 's3774940-cc2018';
+                $projectId = 'task2-272810';
+                //$projectId = 's3774940-cc2018';
 
                 $request = new Google_Service_Bigquery_QueryRequest();
                 $str = '';

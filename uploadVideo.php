@@ -19,7 +19,6 @@ $datastore = new DatastoreClient([
     'projectId' => 'task2-272810'
 ]);
 
-//信息 上传datastore
 if (array_key_exists('title', $_POST) && array_key_exists('category', $_POST) ) {
     $title = $_POST['title'];
     $category = $_POST['category'];
@@ -45,7 +44,7 @@ if ($title == null || !$title){
 
 }
 
-//视频文件 上传storage
+
 $storage = new StorageClient();
 
 $fileName = $_FILES[$_POST["video"]]['name'];

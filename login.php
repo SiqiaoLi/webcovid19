@@ -2,29 +2,23 @@
 include("connectMysql.php");
 session_start();
 
-if (array_key_exists('email', $_POST) && array_key_exists('password', $_POST) ) {
+if (!empty($_POST["login"]) ) {
     $email = $_POST['email']; 
     $password = $_POST['password'];
     
-
-    if ($email == null || !$email){
-      echo "Please enter ID";
-  } elseif($password == null || !$password){
-      echo "Please enter password";
-  } else {
-    
-    $sql = "SELECT email FROM users WHERE email = '$email' and password = '$password'";
+    $sql = "SELECT email, username FROM users WHERE email = '$email' AND password = '$password'";
     $result = $con->query($sql);
     $count = $result->num_rows;
     
     if($count == 1) {
       $_SESSION['login_email'] = $email;
-      echo "user ".$email." loading...";
+      //echo "user ".$email." loading...";
       echo "<script> window.location.href='main' </script>";
     } else {
-      echo "user ".$email." failed to log in.";
+      //echo "user ".$email." failed to log in.";
+      $errorMessage = 'Invalid email or password';
     }  
-  }
+  
    
 }
 ?>
@@ -54,6 +48,15 @@ if (array_key_exists('email', $_POST) && array_key_exists('password', $_POST) ) 
         user-select: none;
       }
 
+      .error-message {
+        padding: 7px 10px;
+        background: #fff1f2;
+        border: #ffd5da 1px solid;
+        color: #d6001c;
+        border-radius: 4px;
+        margin: 30px 0px 10px 0px;
+      }
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -72,6 +75,17 @@ if (array_key_exists('email', $_POST) && array_key_exists('password', $_POST) ) 
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>
 </div>
 <form class="form-signin" action="/login" method="post">
+<?php
+        if (! empty($errorMessage)) {
+            ?>	
+                    <div class="text-center mb-4 error-message">
+                    <?php 
+                        echo $errorMessage . "<br/>";
+                    ?>
+                    </div>
+  <?php
+        }
+  ?>
   <div class="form-label-group">
     <input type="email" class="form-control" id="inputEmail1" name="email" placeholder="Email address" required autofocus>
     <label for="inputEmail1">Email</label>
@@ -80,7 +94,8 @@ if (array_key_exists('email', $_POST) && array_key_exists('password', $_POST) ) 
     <input type="password" class="form-control" id="inputPassword1" name="password" placeholder="Password" required autofocus>
     <label for="inputPassword1">Password</label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+  
+  <input class="btn btn-lg btn-primary btn-block" type="submit" name="login" value="Login">
   <input class="btn btn-lg btn-primary btn-block" type="button" onclick="location.href='register'" value="Register"/>
   <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
 </form>

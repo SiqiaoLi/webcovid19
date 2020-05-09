@@ -2,24 +2,34 @@
 
 include("connectMysql.php");
 session_start();
- if (array_key_exists('email', $_POST) && array_key_exists('username', $_POST) && array_key_exists('password', $_POST) && array_key_exists('confpassword', $_POST)) {
+ if (!empty($_POST["signup"])) {
       $email=$_POST['email'];
       $username=$_POST['username'];
       $password=$_POST['password'];
-          $confpassword=$_POST['confpassword'];
-      
+      $confpassword=$_POST['confpassword'];
+      $errorMessage = array();
           if($password != $confpassword){
-                echo "Passwords do not match";
+                $errorMessage[] = 'Passwords do not match';
+                
           } else {
-            $sql="insert into users (username, email, password) VALUES ('$username', '$email', '$password' )";
-          
-            if($con->query($sql) === TRUE){
-                  $_SESSION['username']=$username;
-                  $_SESSION['email']=$email;
-                echo "<script>window.location.href='main'</script>";
-            }else{
-                echo "error!";
-            }
+            $sql = "SELECT email FROM users WHERE email = '$email'";
+            $result = $con->query($sql);
+            $count = $result->num_rows;
+            
+            if($count == 0){
+                $sql="insert into users (username, email, password) VALUES ('$username', '$email', '$password' )";
+                
+                if($con->query($sql) === TRUE){
+                    $_SESSION['username']=$username;
+                    $_SESSION['email']=$email;
+                  echo "<script>window.location.href='main'</script>";
+                }else{
+                    $errorMessage[] = 'Mysql error';
+                    
+                }
+            } else {
+                $errorMessage[] = 'This email already exits';
+            }   
           }
  }     
 
@@ -49,6 +59,15 @@ session_start();
         user-select: none;
       }
 
+      .error-message {
+        padding: 7px 10px;
+        background: #fff1f2;
+        border: #ffd5da 1px solid;
+        color: #d6001c;
+        border-radius: 4px;
+        margin: 30px 0px 10px 0px;
+      }
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -68,29 +87,48 @@ session_start();
     </div>
     
     <form class="form-signin" action="/register" method="post">
+
+    <?php
+        if (! empty($errorMessage) && is_array($errorMessage)) {
+            ?>	
+                    <div class="text-center mb-4 error-message">
+                    <?php 
+
+                    foreach($errorMessage as $message) {
+                        echo $message . "<br/>";
+                    }
+                    ?>
+                    </div>
+        <?php
+        }
+        ?>
         
         <div class="form-label-group">
-            <input type="text" class="form-control" id="inputUsername" name="username"  placeholder="Username" required autofocus>
+            <input type="text" class="form-control" id="inputUsername" name="username"  placeholder="Username" 
+            value="<?php if(isset($_POST['username'])) echo $_POST['username']; ?>" required autofocus>
             <label for="inputUsername">Username</label>
         </div>
         
         <div class="form-label-group">
-            <input type="email" class="form-control" id="inputEmail1" name="email" placeholder="Email address" required autofocus>
+            <input type="email" class="form-control" id="inputEmail1" name="email" placeholder="Email address" 
+            value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>" required autofocus>
             <label for="inputEmail1">Email</label>
         </div>
         
         <div class="form-label-group">
-            <input type="password" class="form-control" id="password1" name="password" placeholder="Password" required autofocus>
+            <input type="password" class="form-control" id="password1" name="password" placeholder="Password" 
+            value="<?php if(isset($_POST['password'])) echo $_POST['password']; ?>" required autofocus>
             <label for="password1">Password</label>
         </div>
         
         <div class="form-label-group">
-            <input type="password" class="form-control" id="password2" name="confpassword" placeholder="Confirm Password">
+            <input type="password" class="form-control" id="password2" name="confpassword" placeholder="Confirm Password"
+            value="<?php if(isset($_POST['confpassword'])) echo $_POST['confpassword']; ?>" required autofocus> 
             <label for="password2">Confirm Password</label>
         </div>
         
         <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" name="signup" value="Sign up">
         <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
     </form>
 </div>
