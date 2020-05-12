@@ -1,14 +1,29 @@
 <?php
-
-require_once 'php/google-api-php-client/vendor/autoload.php';
-
 session_start();
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+require_once 'vendor/autoload.php';
 
-$name = $_SESSION['username'];
-$email = $_SESSION['login_email'];
+use Google\Cloud\Datastore\DatastoreClient;
 
-echo $name."   ";
+$datastore = new DatastoreClient([
+  'projectId' => 'task2-272810'
+]);
 
+if (!empty($_POST["comment"])){
+    $content = $_POST['content']; 
+    # The kind for the new entity
+
+    $key = $datastore->key('usercomment', 'default')->pathElement('comment');
+    $entity = $datastore->entity($key, [
+        'date' => new DateTime(),
+        'user' => $username,
+        'email' => $email,
+        'content' => $content,
+    ]);
+
+    $datastore->insert($entity);
+}
 ?>
 
 
@@ -72,7 +87,7 @@ echo $name."   ";
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="/speak">
+            <a class="nav-link active" href="#">
               <span data-feather="home"></span>
               Speak 
             </a>
@@ -116,14 +131,14 @@ echo $name."   ";
           </a>
         </h6>
         <ul class="nav flex-column mb-2">
-          <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link" href="/cook">
               <span data-feather="file-text"></span>
               Cook With Me
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/music">
+            <a class="nav-link" href="music">
               <span data-feather="file-text"></span>
               Music With Me
             </a>
@@ -146,69 +161,54 @@ echo $name."   ";
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">COVID-19 in Australia</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
-        </div>
-      </div>
+        <h1 class="h2">Speak</h1>
+        
 
-      <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-      <div class="overflow-hidden">
-      <iframe class="noScrolling" width="1150" height="600" src="https://datastudio.google.com/embed/reporting/c5cdcc11-8ae4-4e20-b647-1b28369206e0/page/2lKPB" frameborder="0"  allowfullscreen></iframe>
       </div>
-      
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> 
-      <h2>Daily Number of Reported Cases</h2>
-      </div>
+      <h5>Speak a place where you can write down what you want to say to encourage each other or prayers to comfort one another during this tough time.</h5>
+      <form action="/speak" method="post">
+            <div class="form-group">
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="content" required></textarea>
+            </div>
+            <input class="btn btn-primary mb-2" type="submit" name="comment" value="comment">
+      </form>
+
       <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>Country</th>
-              <th>Date</th>
-              <th>Daily Confirmed Cases</th>
-              <th>Confirmed Cases</th>
-              <th>Deaths</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-                $client = new Google_Client();
-                $client->useApplicationDefaultCredentials();
-                $client->addScope(Google_Service_Bigquery::BIGQUERY);
-                $bigquery = new Google_Service_Bigquery($client);
-                $projectId = 'task2-272810';
-                //$projectId = 's3774940-cc2018';
+      <ul class="list-unstyled">
+      <?php
+      $datastore = new DatastoreClient([
+            'projectId' => 'task2-272810'
+            ]);
 
-                $request = new Google_Service_Bigquery_QueryRequest();
-                $str = '';
+      $ancestorKey = $datastore->key('usercomment', 'default');
+      $query = $datastore->query()
+            ->kind('comment')
+            ->hasAncestor($ancestorKey)
+            // ->order('date', Query::ORDER_DESCENDING)
+            ->limit(20);
+      $result = $datastore->runQuery($query);
 
-                $request->setQuery("SELECT countries_and_territories,date,daily_confirmed_cases,confirmed_cases,deaths FROM [bigquery-public-data.covid19_ecdc.covid_19_geographic_distribution_worldwide] where countries_and_territories = 'Australia' order by date DESC LIMIT 7");
+      // $query = $datastore->gqlQuery('SELECT * FROM comment ORDER BY date DESC LIMIT 20');
+      // $result = $datastore->runQuery($query);
 
-                $response = $bigquery->jobs->query($projectId, $request);
-                $rows = $response->getRows();
 
-                foreach ($rows as $row)
-                {
-                    $str .= "<tr>";
-
-                    foreach ($row['f'] as $field)
-                    {
-                        $str .= "<td>" . $field['v'] . "</td>";
-                    }
-                    $str .= "</tr>";
-                }
-                echo $str;
-            ?>
-          </tbody>
-        </table>
+      foreach ($result as $entity) {
+      ?>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <li class='media'>
+            <div class='media-body'>
+            <h5 class='mt-0 mb-1'> <?php echo $entity['user']; 
+                                         echo "&nbsp"; ?></h5>
+                                         <p style="color:darkgrey;"><?php $date = $entity['date']->format('Y-m-d H:i:s');
+                                         echo $date;?></p>
+            <h6><?php echo $entity['content']; ?></h6>
+            </div>
+            </li>
+            </div>
+      <?php 
+      }
+      ?>
+      </ul>
       </div>
     </main>
   </div>

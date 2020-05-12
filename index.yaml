@@ -1,0 +1,8 @@
+indexes:
+- kind: comment
+  ancestor: yes
+  properties:
+  - name: date
+    direction: desc
+
+  

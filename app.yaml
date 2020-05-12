@@ -5,8 +5,9 @@ handlers:
 - url: /css
   static_dir: css
 
-- url: /otherCountries
-  script: otherCountries.php
+- url: /js
+  static_dir: js
+
 
 - url: /
   script: login.php
@@ -20,26 +21,36 @@ handlers:
 - url: /register
   script: register.php
 
+- url: /speak
+  script: speak.php
+
+- url: /otherCountries
+  script: otherCountries.php
+
 - url: /name
   script: name.php
 
-- url: /password
-  script: password.php
-
-- url: /uploadVideo
-  script: uploadVideo.php
+- url: /youtube
+  script: youtube.php
 
 - url: /uploadVideo1
   script: uploadVideo1.php
 
-- url: /watch
-  script: watch.php
+- url: /game
+  script: game.php
 
-- url: /covid19
-  script: covid19.php
+- url: /cook
+  script: cook.php
+
+- url: /workout
+  script: workout.php
+
+- url: /music
+  script: music.php
 
 - url: /selectCountry
   script: selectCountry.php
+
 
 
 

@@ -11,8 +11,9 @@ if (!empty($_POST["login"]) ) {
     $count = $result->num_rows;
     
     if($count == 1) {
-      $_SESSION['login_email'] = $email;
-      //echo "user ".$email." loading...";
+      $row = $result->fetch_assoc();
+      $_SESSION['email']=$email;
+      $_SESSION['username']=$row["username"];
       echo "<script> window.location.href='main' </script>";
     } else {
       //echo "user ".$email." failed to log in.";

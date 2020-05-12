@@ -71,21 +71,21 @@ echo $name."   ";
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link active" href="/speak">
               <span data-feather="home"></span>
-              Dashboard <span class="sr-only">(current)</span>
+              Speak 
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/watch">
+            <a class="nav-link" href="/youtube">
               <span data-feather="file"></span>
-              Watch MV
+              COVID-19 News
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/otherCountries">
               <span data-feather="otherCountries"></span>
-              COVID19 in other countries
+              COVID-19 in other countries
             </a>
           </li>
           <li class="nav-item">
@@ -109,34 +109,34 @@ echo $name."   ";
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
+          <span>#WithMe</span>
           <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
             <span data-feather="plus-circle"></span>
           </a>
         </h6>
         <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
+        <li class="nav-item">
+            <a class="nav-link" href="/cook">
               <span data-feather="file-text"></span>
-              Current month
+              Cook With Me
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="music">
               <span data-feather="file-text"></span>
-              Last quarter
+              Music With Me
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/workout">
               <span data-feather="file-text"></span>
-              Social engagement
+              Workout With Me
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/game">
               <span data-feather="file-text"></span>
-              Year-end sale
+              Game With Me
             </a>
           </li>
         </ul>
@@ -192,7 +192,7 @@ echo $name."   ";
                   $country = $_SESSION['country'];
                 } else {
                   $country = $_POST["country"];
-                  $_SESSION['country'] =$_POST["country"];
+                  $_SESSION['country']=$_POST["country"];
                 }
                 
                 $request = new Google_Service_Bigquery_QueryRequest();
