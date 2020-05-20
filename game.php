@@ -45,8 +45,8 @@
 </head>
 <body>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main">Name</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main"><img src="/picture/stayhomemain.png"></a>
+  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="/login">Sign out</a>
@@ -60,7 +60,7 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="/speak">
+            <a class="nav-link" href="/speak">
               <span data-feather="home"></span>
               Speak 
             </a>
@@ -77,7 +77,7 @@
               COVID-19 in other countries
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="users"></span>
               Edit your profile
@@ -94,7 +94,7 @@
               <span data-feather="layers"></span>
               Integrations
             </a>
-          </li>
+          </li> -->
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -123,7 +123,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/game">
+            <a class="nav-link active" href="/game">
               <span data-feather="file-text"></span>
               Game With Me
             </a>

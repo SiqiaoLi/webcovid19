@@ -73,7 +73,8 @@ if (!empty($_POST["login"]) ) {
 
 <div class="container container-register">
 <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    <img class="mb-4" src="/picture/stayhome.png"> 
+    <!-- <h1 class="h3 mb-3 font-weight-normal">Login</h1> -->
 </div>
 <form class="form-signin" action="/login" method="post">
 <?php
@@ -98,7 +99,7 @@ if (!empty($_POST["login"]) ) {
   
   <input class="btn btn-lg btn-primary btn-block" type="submit" name="login" value="Login">
   <input class="btn btn-lg btn-primary btn-block" type="button" onclick="location.href='register'" value="Register"/>
-  <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
+  <p class="mt-5 mb-3 text-muted text-center">&copy; 2020 Stay Home With Me </p>
 </form>
 </div>
 

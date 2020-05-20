@@ -83,7 +83,8 @@ session_start();
 <div class="container container-register">
 
     <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+        <img class="mb-4" src="/picture/stayhome.png">
+        <!-- <h1 class="h3 mb-3 font-weight-normal">Register</h1> -->
     </div>
     
     <form class="form-signin" action="/register" method="post">
@@ -129,7 +130,7 @@ session_start();
         
         <br>
         <input class="btn btn-lg btn-primary btn-block" type="submit" name="signup" value="Sign up">
-        <p class="mt-5 mb-3 text-muted text-center">&copy; 2020</p>
+        <p class="mt-5 mb-3 text-muted text-center">&copy; 2020 Stay Home With Me </p>
     </form>
 </div>
     

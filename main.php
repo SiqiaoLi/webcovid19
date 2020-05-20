@@ -5,7 +5,7 @@ require_once 'php/google-api-php-client/vendor/autoload.php';
 session_start();
 
 $name = $_SESSION['username'];
-$email = $_SESSION['login_email'];
+$email = $_SESSION['email'];
 
 echo $name."   ";
 
@@ -20,7 +20,7 @@ echo $name."   ";
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.6">
-    <title>Prayer</title>
+    <title>stay home</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/dashboard/">
    
@@ -57,8 +57,8 @@ echo $name."   ";
   </head>
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main">Name</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main"><img src="/picture/stayhomemain.png"></a>
+  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="/login">Sign out</a>
@@ -72,7 +72,7 @@ echo $name."   ";
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="/speak">
+            <a class="nav-link" href="/speak">
               <span data-feather="home"></span>
               Speak 
             </a>
@@ -89,7 +89,7 @@ echo $name."   ";
               COVID-19 in other countries
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="users"></span>
               Edit your profile
@@ -106,7 +106,7 @@ echo $name."   ";
               <span data-feather="layers"></span>
               Integrations
             </a>
-          </li>
+          </li> -->
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -217,7 +217,16 @@ echo $name."   ";
         <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-        <script src="dashboard.js"></script></body>
+        <script src="dashboard.js"></script>
+        <!-- dialogflow -->
+        <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+          <df-messenger
+            intent="WELCOME"
+            chat-title="Ask about COVID-19"
+            agent-id="a5623113-d3d6-49e5-8b78-a00f575906d6"
+            language-code="en"
+          ></df-messenger>
+</body>
 </html>
 
 

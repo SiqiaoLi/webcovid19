@@ -1,7 +1,7 @@
 <?php
 session_start();
 $userID = $_SESSION['user'];
-require_once 'vendor/autoload.php';
+require_once 'php/google-api-php-client/vendor/autoload.php';
 
 use Google\Cloud\Datastore\DatastoreClient;
 

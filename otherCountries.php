@@ -56,8 +56,8 @@ echo $name."   ";
   </head>
   <body>
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main">Name</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/main"><img src="/picture/stayhomemain.png"></a>
+  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="/login">Sign out</a>
@@ -71,7 +71,7 @@ echo $name."   ";
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="/speak">
+            <a class="nav-link" href="/speak">
               <span data-feather="home"></span>
               Speak 
             </a>
@@ -83,12 +83,12 @@ echo $name."   ";
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/otherCountries">
+            <a class="nav-link active" href="/otherCountries">
               <span data-feather="otherCountries"></span>
               COVID-19 in other countries
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="users"></span>
               Edit your profile
@@ -105,7 +105,7 @@ echo $name."   ";
               <span data-feather="layers"></span>
               Integrations
             </a>
-          </li>
+          </li> -->
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -343,6 +343,13 @@ echo $name."   ";
                     $str .= "</tr>";
                 }
                 echo $str;
+                
+                // user searching history
+                $handle = fopen('gs://userhistory-storage/searches'.date("Y-m-d h:i:sa").'.txt','w');
+
+                fwrite($handle, $name." searched at ".date("Y-m-d h:i:sa")." - "."Country : ".$country2.", Day : ".$date.", Month: ".$month.", Year : ".$year);
+
+                fclose($handle);
             ?>
 
           </tbody>
