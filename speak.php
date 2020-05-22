@@ -190,7 +190,7 @@ $ancestorKey = $datastore->key('usercomment', 'default');
       $query = $datastore->query()
             ->kind('comment')
             ->hasAncestor($ancestorKey)
-            // ->order('date', Query::ORDER_DESCENDING)
+            ->order('date', 'DESCENDING')
             ->limit(20);
       $result = $datastore->runQuery($query);
 
