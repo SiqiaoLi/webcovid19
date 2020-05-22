@@ -4,25 +4,51 @@ $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 require_once 'vendor/autoload.php';
 
-use Google\Cloud\Datastore\DatastoreClient;
+use Google\Cloud\Translate\TranslateClient;
+    $targetLanguage = 'en';  // Language to translate to
+    $translate = new TranslateClient();
 
-$datastore = new DatastoreClient([
-  'projectId' => 'task2-272810'
-]);
+use Google\Cloud\Datastore\DatastoreClient;
+    $datastore = new DatastoreClient([
+      'projectId' => 'task2-272810'
+    ]);
+
 
 if (!empty($_POST["comment"])){
     $content = $_POST['content']; 
     # The kind for the new entity
 
-    $key = $datastore->key('usercomment', 'default')->pathElement('comment');
-    $entity = $datastore->entity($key, [
-        'date' => new DateTime(),
-        'user' => $username,
-        'email' => $email,
-        'content' => $content,
-    ]);
+    $text = $content;
+        $result = $translate->detectLanguage($text);
+        if(strcmp('en', $result[languageCode]) != 0){ 
+            $result = $translate->translate($text, [
+                'target' => $targetLanguage,
+            ]); 
+            $translationText = $result[text];  
+            echo 'in';
+            $key = $datastore->key('usercomment', 'default')->pathElement('comment');
+            $entity = $datastore->entity($key, [
+                'date' => new DateTime(),
+                'user' => $username,
+                'email' => $email,
+                'content' => $content,
+                'translationtext' => $translationText,
+            ]);
 
-    $datastore->insert($entity);
+            $datastore->insert($entity);
+
+        } else {
+          $key = $datastore->key('usercomment', 'default')->pathElement('comment');
+            $entity = $datastore->entity($key, [
+                'date' => new DateTime(),
+                'user' => $username,
+                'email' => $email,
+                'content' => $content,
+            ]);
+
+            $datastore->insert($entity);
+        } 
+
 }
 ?>
 
@@ -182,10 +208,6 @@ if (!empty($_POST["comment"])){
 
 // Include Google Cloud dependendencies using Composer
 
-$datastore = new DatastoreClient([
-  'projectId' => 'task2-272810'
-]);
-
 $ancestorKey = $datastore->key('usercomment', 'default');
       $query = $datastore->query()
             ->kind('comment')
@@ -193,11 +215,6 @@ $ancestorKey = $datastore->key('usercomment', 'default');
             ->order('date', 'DESCENDING')
             ->limit(20);
       $result = $datastore->runQuery($query);
-
-// [START translate_translate_text]
-use Google\Cloud\Translate\TranslateClient;
-$targetLanguage = 'en';  // Language to translate to
-$translate = new TranslateClient();
 
       foreach ($result as $entity) {
     ?>
@@ -210,15 +227,10 @@ $translate = new TranslateClient();
         <h6><?php echo $entity['content']; ?></h6>
 
         <?php
-        $text = $entity['content'];
-        $result = $translate->detectLanguage($text);
-        if(strcmp('en', $result[languageCode]) != 0){ ?>
+        
+        if(!empty($entity['translationtext'])){ ?>
             <p class="translate">See Traslation</p>  
-            <?php 
-            $result = $translate->translate($text, [
-                'target' => $targetLanguage,
-            ]); ?>
-            <h6 class="transtext"><?php echo $result[text]; ?></h6>
+            <h6 class="transtext"><?php echo $entity['translationtext']; ?></h6>
         <?php    
         } 
         ?>
